@@ -469,6 +469,55 @@
             .section-heading { font-size: clamp(2.1rem, 8vw, 3.2rem); }
         }
 
+        /* Mobile: replace puzzle pieces with stacked cards */
+        @media (max-width: 760px) {
+            .puzzle-section {
+                padding: clamp(60px, 10vh, 100px) clamp(20px, 5vw, 40px);
+            }
+            .puzzle-canvas {
+                aspect-ratio: auto;
+                width: 100%;
+                height: auto;
+            }
+            .puzzle-svg { display: none; }
+            .puzzle-text-layer {
+                position: static;
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+                pointer-events: auto;
+            }
+            .piece-text,
+            .text-1, .text-2, .text-3, .text-4, .text-5, .text-6 {
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
+                left: auto !important;
+                top: auto !important;
+                padding: 26px 22px !important;
+                border-radius: 12px;
+                text-align: left;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .text-1 { background: var(--tile-1); }
+            .text-2 { background: var(--tile-2); }
+            .text-3 { background: var(--tile-3); }
+            .text-4 { background: var(--tile-4); }
+            .text-5 { background: var(--tile-5); }
+            .text-6 { background: var(--tile-6); }
+            .piece-text h3 {
+                font-size: 1.25rem;
+                margin-bottom: 0.45rem;
+                line-height: 1.2;
+            }
+            .piece-text p {
+                font-size: 0.95rem;
+                line-height: 1.55;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .reveal, .piece, .piece-text {
                 opacity: 1 !important;
