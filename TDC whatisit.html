@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dial Up Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FDFAF5;
+            --cream-warm: #F5EFE0;
+            --green: #1D3128;
+            --green-deep: #14241D;
+            --green-soft: #2D4938;
+            --gold: #B8924A;
+            --gold-soft: #C9A961;
+            --ink: #111111;
+            --rule: rgba(29, 49, 40, 0.15);
+            --section-pad: clamp(80px, 12vh, 140px);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-xs: 6px;
+
+            /* Puzzle piece palette */
+            --tile-1: #D9A647;
+            --tile-2: #1D3128;
+            --tile-3: #2D5963;
+            --tile-4: #C26B47;
+            --tile-5: #5C3142;
+            --tile-6: #7A8866;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Cormorant Garamond', 'Garamond', serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            font-weight: 400;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Hero (full-bleed dark green, no video) */
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--cream);
+            background: var(--green-deep);
+            padding: clamp(120px, 16vh, 180px) 24px clamp(80px, 10vh, 120px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .hero-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: clamp(3.06rem, 6.75vw, 5.4rem);
+            color: #ffffff;
+            letter-spacing: 0.01em;
+            line-height: 1.05;
+            text-shadow: 0 6px 36px rgba(0, 0, 0, 0.5);
+        }
+        .hero-logo .line { display: block; }
+
+        .hero-divider {
+            width: 88px;
+            height: 1px;
+            background-color: var(--gold);
+            margin: 1.8rem auto;
+            opacity: 0.95;
+        }
+
+        .hero-slogan {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: clamp(0.855rem, 1.215vw, 1.08rem);
+            color: #ffffff;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+        }
+
+        .hero-descriptor {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+            color: rgba(253, 250, 245, 0.88);
+            line-height: 1.7;
+            max-width: 620px;
+            margin: 2.4rem auto 2.8rem;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--cream);
+            background-color: transparent;
+            border: 1px solid var(--gold);
+            border-radius: var(--radius-sm);
+            padding: 14px 36px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.4s ease, color 0.4s ease,
+                        transform 0.3s ease, box-shadow 0.4s ease;
+        }
+        .hero-cta:hover, .hero-cta:focus-visible {
+            background-color: var(--gold);
+            color: var(--cream);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px -16px rgba(184, 146, 74, 0.7);
+            outline: none;
+        }
+
+        /* Sections */
+        body > section { zoom: 0.9; }
+
+        section.block {
+            padding: var(--section-pad) clamp(24px, 6vw, 80px);
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            font-family: 'Cormorant Garamond', 'Garamond', serif;
+            font-weight: 500;
+            font-size: clamp(2.4rem, 5vw, 4.4rem);
+            color: var(--green);
+            text-align: center;
+            line-height: 1.1;
+            letter-spacing: 0.005em;
+            margin-bottom: 0.6rem;
+        }
+        .section-heading .accent-gold { color: var(--gold); }
+
+        .section-heading-rule {
+            width: 56px;
+            height: 1px;
+            background: var(--gold);
+            margin: 0 auto 3rem;
+            opacity: 0.9;
+        }
+
+        /* Intro */
+        .intro {
+            max-width: 820px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .intro p {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+            line-height: 1.75;
+            color: var(--ink);
+            margin-bottom: 1.8rem;
+        }
+        .intro p:last-child { margin-bottom: 0; }
+
+        /* Prose sections */
+        .prose-wrap {
+            max-width: 820px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .prose-wrap p {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+            line-height: 1.75;
+            color: rgba(29, 49, 40, 0.88);
+            margin-bottom: 1.6rem;
+        }
+        .prose-wrap p:last-child { margin-bottom: 0; }
+
+        /* Forest (full-bleed green) section */
+        .forest-section {
+            background: var(--green);
+            padding: var(--section-pad) clamp(24px, 6vw, 80px);
+        }
+        .forest-section .inner {
+            max-width: 820px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .forest-section .section-heading { color: var(--cream); }
+        .forest-section .section-heading .accent-gold { color: var(--gold-soft); }
+        .forest-section p {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+            line-height: 1.75;
+            color: rgba(253, 250, 245, 0.88);
+        }
+
+        /* Launch CTA band */
+        .cta-band {
+            padding: var(--section-pad) clamp(24px, 6vw, 80px);
+            text-align: center;
+            background: var(--cream);
+        }
+        .cta-band-inner {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        .cta-band p.cta-detail {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+            color: var(--ink);
+            margin-bottom: 2.4rem;
+            line-height: 1.6;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--cream);
+            background-color: var(--green);
+            border: 1px solid var(--green);
+            border-radius: var(--radius-sm);
+            padding: 14px 30px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.4s ease, color 0.4s ease,
+                        border-color 0.4s ease, transform 0.3s ease,
+                        box-shadow 0.4s ease;
+            text-align: center;
+            position: relative;
+        }
+        .btn:hover, .btn:focus-visible {
+            background-color: transparent;
+            color: var(--green);
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px -16px rgba(29, 49, 40, 0.5);
+        }
+        .btn-gold {
+            background: transparent;
+            color: var(--green);
+            border-color: var(--gold);
+        }
+        .btn-gold:hover, .btn-gold:focus-visible {
+            background: var(--gold);
+            color: var(--cream);
+            border-color: var(--gold);
+        }
+
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Puzzle Section */
+        .puzzle-section {
+            background: var(--cream);
+            padding: clamp(90px, 14vh, 160px) clamp(24px, 6vw, 80px);
+            position: relative;
+        }
+        .puzzle-wrap {
+            max-width: 1180px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .puzzle-canvas {
+            position: relative;
+            width: min(78%, 920px);
+            margin: 0 auto;
+            aspect-ratio: 800 / 780;
+        }
+        .puzzle-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+        .piece path {
+            stroke: var(--cream);
+            stroke-width: 6;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            paint-order: stroke fill;
+        }
+        .piece-1 path { fill: var(--tile-1); }
+        .piece-2 path { fill: var(--tile-2); }
+        .piece-3 path { fill: var(--tile-3); }
+        .piece-4 path { fill: var(--tile-4); }
+        .piece-5 path { fill: var(--tile-5); }
+        .piece-6 path { fill: var(--tile-6); }
+
+        .piece {
+            opacity: 0;
+            transition: transform 1.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        opacity 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .piece-1, .piece-3, .piece-5 { transform: translateX(-820px); }
+        .piece-2, .piece-4, .piece-6 { transform: translateX(820px); }
+
+        .puzzle-canvas.is-visible .piece {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .puzzle-canvas.is-visible .piece-3,
+        .puzzle-canvas.is-visible .piece-4 { transition-delay: 0.7s; }
+        .puzzle-canvas.is-visible .piece-5,
+        .puzzle-canvas.is-visible .piece-6 { transition-delay: 1.4s; }
+
+        .puzzle-text-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .piece-text h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.005em;
+            line-height: 1.08;
+        }
+        .piece-text {
+            position: absolute;
+            padding: 14% 12%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+            opacity: 0;
+            transition: transform 1.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        opacity 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .piece-text p {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+            line-height: 1.5;
+        }
+
+        .text-1 h3 { color: var(--green); }
+        .text-1 p  { color: var(--green); }
+        .text-2 h3 { color: var(--gold-soft); }
+        .text-2 p  { color: var(--cream); }
+        .text-3 h3 { color: var(--tile-1); }
+        .text-3 p  { color: var(--cream); }
+        .text-4 h3 { color: var(--green); }
+        .text-4 p  { color: var(--green); }
+        .text-5 h3 { color: var(--tile-1); }
+        .text-5 p  { color: var(--cream); }
+        .text-6 h3 { color: var(--cream); }
+        .text-6 p  { color: var(--cream); }
+
+        .text-1 { left: 0;   top: 0;       width: 50%; height: 33.33%; }
+        .text-2 { left: 50%; top: 0;       width: 50%; height: 33.33%; }
+        .text-3 { left: 0;   top: 33.33%;  width: 50%; height: 33.33%; }
+        .text-4 { left: 50%; top: 33.33%;  width: 50%; height: 33.33%; }
+        .text-5 { left: 0;   top: 66.66%;  width: 50%; height: 33.33%; }
+        .text-6 { left: 50%; top: 66.66%;  width: 50%; height: 33.34%; }
+
+        .text-1, .text-3, .text-5 { transform: translateX(-820px); }
+        .text-2, .text-4, .text-6 { transform: translateX(820px); }
+
+        .puzzle-canvas.is-visible .piece-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .puzzle-canvas.is-visible .text-3,
+        .puzzle-canvas.is-visible .text-4 { transition-delay: 0.7s; }
+        .puzzle-canvas.is-visible .text-5,
+        .puzzle-canvas.is-visible .text-6 { transition-delay: 1.4s; }
+
+        /* Top nav */
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 32px;
+            background: transparent;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease;
+        }
+        .topnav.scrolled {
+            background: rgba(253, 250, 245, 0.92);
+            backdrop-filter: saturate(140%) blur(10px);
+            -webkit-backdrop-filter: saturate(140%) blur(10px);
+            box-shadow: 0 1px 0 var(--rule);
+        }
+        .topnav a {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: 0.78rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #ffffff;
+            transition: color 0.3s ease;
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+        }
+        .topnav.scrolled a {
+            color: var(--green);
+            text-shadow: none;
+        }
+        .topnav a:hover { color: var(--gold); }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--rule);
+            padding: 32px clamp(24px, 6vw, 80px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: var(--cream);
+        }
+        footer span, footer a {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            color: var(--green);
+            opacity: 0.7;
+        }
+        footer a {
+            text-decoration: none;
+            transition: opacity 0.3s ease, color 0.3s ease;
+        }
+        footer a:hover { opacity: 1; color: var(--gold); }
+
+        /* Responsive */
+        @media (max-width: 880px) {
+            .puzzle-canvas { width: 96%; }
+            .topnav { padding: 18px 22px; }
+            .piece-text { padding: 12% 10%; }
+            .piece-text p { font-size: 0.82rem; line-height: 1.45; }
+            .piece-text h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+            .section-heading { font-size: clamp(2.1rem, 8vw, 3.2rem); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .piece, .piece-text {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="topnav" id="topnav">
+        <a href="/" aria-label="The Dial Up Club">The Dial Up Club</a>
+        <a href="https://launchrsvp.thedialupclub.co.uk">RSVP to our launch</a>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero" aria-label="The Dial Up Club">
+        <div class="hero-content">
+            <h1 class="hero-logo">
+                <span class="line">The Dial Up</span>
+                <span class="line">Club</span>
+            </h1>
+            <div class="hero-divider"></div>
+            <p class="hero-slogan">We Curate Professional Supper Clubs</p>
+            <p class="hero-descriptor">The Dial Up Club is a professional networking community that brings together small groups of leaders, experts and educators through curated supper clubs built around shared challenges, industries and areas of expertise.</p>
+            <a class="hero-cta" href="https://launchrsvp.thedialupclub.co.uk">Join us for our launch evening</a>
+        </div>
+    </header>
+
+    <!-- INTRO -->
+    <section class="block">
+        <div class="intro">
+            <p class="reveal">Just as dial-up internet was the original peer-to-peer connection, we're stripping professional networking back to its most fundamental purpose: putting the right people in the same room to build meaningful, lasting relationships.</p>
+            <p class="reveal">Each supper club is designed for people who want more thoughtful professional relationships than traditional networking typically creates. If you've ever thought "I wish I could talk to more people who actually get what my job involves", this is designed with you in mind.</p>
+        </div>
+    </section>
+
+    <!-- WHY IT EXISTS -->
+    <section class="block">
+        <h2 class="section-heading reveal">Why it <span class="accent-gold">exists</span></h2>
+        <div class="section-heading-rule reveal"></div>
+        <div class="prose-wrap">
+            <p class="reveal">Professional networking works brilliantly for some people and barely at all for others. The Dial Up Club exists to close that gap, creating a platform where professional relationships are built intentionally rather than incidentally.</p>
+            <p class="reveal">Each gathering brings together a cohort of twelve individuals who share similar levels of seniority, ambition and professional context, but who have taken completely different paths to get there. That difference is the point. It's where the most valuable perspectives emerge.</p>
+        </div>
+    </section>
+
+    <!-- HOW THE EVENINGS ARE DESIGNED -->
+    <section class="block">
+        <h2 class="section-heading reveal">How the evenings are <span class="accent-gold">designed</span></h2>
+        <div class="section-heading-rule reveal"></div>
+        <div class="prose-wrap">
+            <p class="reveal">Long before professional networking existed, humans built their most important relationships over food. Each Dial Up Club event takes place around a dinner table, hosted at carefully selected restaurants that champion exceptional food in a relaxed, welcoming setting.</p>
+            <p class="reveal">Our supper clubs are capped at twelve attendees: enough people to generate genuinely diverse perspectives, but few enough for everyone to be heard and to contribute meaningfully to the discussion.</p>
+            <p class="reveal">No conference rooms. No pitches. No selling. Just great food and thoughtful conversation.</p>
+            <p class="reveal">We believe a great supper club doesn't just happen. It's curated. Our facilitation process begins before you arrive: we introduce attendees in advance so conversations can begin before the evening itself. During the event, we moderate a blend of structured and unstructured discussion, making sure every voice in the room is heard and that the conversation goes somewhere insightful.</p>
+            <p class="reveal">And when the evening ends, we don't just wave you off. We actively support you in turning those connections into a network that lasts.</p>
+        </div>
+    </section>
+
+    <!-- PUZZLE -->
+    <section class="puzzle-section">
+        <div class="puzzle-wrap">
+            <h2 class="section-heading reveal">What our Individual Supper Clubs <span class="accent-gold">consist of</span></h2>
+            <div class="section-heading-rule reveal"></div>
+
+            <div class="puzzle-canvas" id="puzzle-canvas">
+                <svg class="puzzle-svg" viewBox="-6 -6 812 792" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <g class="piece piece-1">
+                        <path d="M 0 18 Q 0 0 18 0 L 400 0 L 400 91 C 440 91 440 169 400 169 L 400 260 L 260 260 C 260 300 140 300 140 260 L 0 260 Z"/>
+                    </g>
+                    <g class="piece piece-2">
+                        <path d="M 400 0 L 782 0 Q 800 0 800 18 L 800 260 L 660 260 C 660 300 540 300 540 260 L 400 260 L 400 169 C 440 169 440 91 400 91 Z"/>
+                    </g>
+                    <g class="piece piece-3">
+                        <path d="M 0 260 L 140 260 C 140 300 260 300 260 260 L 400 260 L 400 351 C 440 351 440 429 400 429 L 400 520 L 260 520 C 260 560 140 560 140 520 L 0 520 Z"/>
+                    </g>
+                    <g class="piece piece-4">
+                        <path d="M 400 260 L 540 260 C 540 300 660 300 660 260 L 800 260 L 800 520 L 660 520 C 660 560 540 560 540 520 L 400 520 L 400 429 C 440 429 440 351 400 351 Z"/>
+                    </g>
+                    <g class="piece piece-5">
+                        <path d="M 0 520 L 140 520 C 140 560 260 560 260 520 L 400 520 L 400 611 C 440 611 440 689 400 689 L 400 780 L 18 780 Q 0 780 0 762 L 0 520 Z"/>
+                    </g>
+                    <g class="piece piece-6">
+                        <path d="M 400 520 L 540 520 C 540 560 660 560 660 520 L 800 520 L 800 762 Q 800 780 782 780 L 400 780 L 400 689 C 440 689 440 611 400 611 Z"/>
+                    </g>
+                </svg>
+
+                <div class="puzzle-text-layer">
+                    <div class="piece-text text-1">
+                        <h3>Twelve People</h3>
+                        <p>Large enough to generate diverse perspectives, small enough for every voice to contribute meaningfully.</p>
+                    </div>
+                    <div class="piece-text text-2">
+                        <h3>Food and Venue</h3>
+                        <p>Every restaurant partner is personally selected, and personally loved, by our team. We choose spaces that champion exceptional food and effortless conversation.</p>
+                    </div>
+                    <div class="piece-text text-3">
+                        <h3>Relevant Peers</h3>
+                        <p>Professionals drawn from different organisations but united by a shared professional theme.</p>
+                    </div>
+                    <div class="piece-text text-4">
+                        <h3>Facilitation</h3>
+                        <p>An expert facilitator is present before, throughout and after the evening to ensure structure, pacing and that every voice is heard.</p>
+                    </div>
+                    <div class="piece-text text-5">
+                        <h3>Chatham House Rules</h3>
+                        <p>What is said in the room stays in the room, creating the conditions for honest, substantive dialogue.</p>
+                    </div>
+                    <div class="piece-text text-6">
+                        <h3>Pre-Event Introductions</h3>
+                        <p>Every attendee is introduced before the evening, so you arrive already knowing who will be at the table.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT TO EXPECT (full-bleed green) -->
+    <section class="forest-section">
+        <div class="inner">
+            <h2 class="section-heading reveal">What to <span class="accent-gold">expect</span></h2>
+            <div class="section-heading-rule reveal"></div>
+            <p class="reveal">Arrive already knowing who's in the room. Spend the evening in conversation that's purposeful but natural. Leave with a sense of who you'd like to stay in touch with, and the support to do so.</p>
+        </div>
+    </section>
+
+    <!-- THE DETAILS -->
+    <section class="block">
+        <h2 class="section-heading reveal">The <span class="accent-gold">details</span></h2>
+        <div class="section-heading-rule reveal"></div>
+        <div class="prose-wrap">
+            <p class="reveal">The rhythm of each supper club is shaped by the group itself. Our ambition is for members to gather several times a year, with the cadence driven organically by the community.</p>
+            <p class="reveal">For now, the Dial Up Club is invite-only. Every cohort is carefully assembled to ensure each gathering feels relevant, balanced and genuinely valuable. In time, membership will open to applications.</p>
+        </div>
+    </section>
+
+    <!-- LAUNCH CTA BAND -->
+    <section class="cta-band">
+        <div class="cta-band-inner">
+            <h2 class="section-heading reveal">Our Launch <span class="accent-gold">Evening</span></h2>
+            <div class="section-heading-rule reveal"></div>
+            <p class="cta-detail reveal">24th June 2026 at Kapara, Soho.</p>
+            <a class="btn btn-gold reveal" href="https://launchrsvp.thedialupclub.co.uk">Reserve your place</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span>© 2026 The Dial Up Club</span>
+        <a href="mailto:hello@thedialupclub.co.uk">hello@thedialupclub.co.uk</a>
+    </footer>
+
+    <script>
+        /* Bidirectional reveal observer */
+        const revealEls = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+                if (e.isIntersecting) e.target.classList.add('is-visible');
+                else e.target.classList.remove('is-visible');
+            });
+        }, { threshold: 0.18, rootMargin: '0px 0px -10% 0px' });
+        revealEls.forEach((el) => io.observe(el));
+
+        /* Puzzle observer */
+        const puzzleCanvas = document.getElementById('puzzle-canvas');
+        const puzzleIO = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+                if (e.isIntersecting) e.target.classList.add('is-visible');
+                else e.target.classList.remove('is-visible');
+            });
+        }, { threshold: 0.25 });
+        puzzleIO.observe(puzzleCanvas);
+
+        /* Top nav background on scroll */
+        const topnav = document.getElementById('topnav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) topnav.classList.add('scrolled');
+            else topnav.classList.remove('scrolled');
+        }, { passive: true });
+    </script>
+
+</body>
+</html>
